@@ -22,10 +22,6 @@ type IProps = IRowProps & IStateProps & IDispatchProps;
 class Row extends React.Component<IProps> {
     public render() {
         const { item, timetable, onSelectItem } = this.props;
-        let content = item.artist;
-        if (item.detail) {
-            content += ` [${item.detail.join(', ')}]`;
-        }
         return (
             <tr>
                 <td style={{ whiteSpace: 'nowrap' }}>
@@ -56,7 +52,7 @@ class Row extends React.Component<IProps> {
                         htmlFor={item.id} >
                         <small>{item.stage}</small>
                         <br />
-                        <strong>{content}</strong>
+                        <strong>{item.artist}</strong>
                     </label>
                 </td>
             </tr>

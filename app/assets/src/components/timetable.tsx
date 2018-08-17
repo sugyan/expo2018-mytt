@@ -21,11 +21,7 @@ class TimeTable extends React.Component<ITimeTableProps> {
             if (! filter.stage[item.stage_code]) {
                 return false;
             }
-            let artist = item.artist || item.detail;
-            if (item.detail !== null) {
-                artist += ` (${item.detail.join(' ')})`;
-            }
-            if (regexp && ! artist.match(regexp)) {
+            if (regexp && ! item.artist.match(regexp)) {
                 return false;
             }
             return true;

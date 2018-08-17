@@ -48,9 +48,8 @@ const timetable = combineReducers({
 const filter = combineReducers({
     day: (
         state: any = {
-            '08-03': true,
-            '08-04': true,
-            '08-05': true,
+            '08-25': true,
+            '08-26': true,
         },
         action: any,
     ) => {
@@ -74,15 +73,12 @@ const filter = combineReducers({
     },
     stage: (
         state: any = {
-            DOLLFACTORY:   true,
-            DREAMSTAGE:    true,
-            FESTIVALSTAGE: true,
-            FUJIYOKOSTAGE: true,
-            GREETINGAREA:  false,
-            HOTSTAGE:      true,
-            INFOCENTRE:    true,
-            SKYSTAGE:      true,
-            SMILEGARDEN:   true,
+            blueberry:  true,
+            kiwi:       true,
+            orange:     true,
+            peach:      true,
+            strawberry: true,
+            talk:       true,
         },
         action: any,
     ) => {

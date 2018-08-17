@@ -1,76 +1,46 @@
 # frozen_string_literal: true
 
-# rubocop:disable Metrics/BlockLength
 namespace :timetable do
   task main: :environment do
-    abort if Time.zone.now >= Time.zone.local(2018, 8, 6)
+    abort if Time.zone.now >= Time.zone.local(2018, 8, 27)
 
     dates = {
-      'day1' => Date.new(2018, 8, 3),
-      'day2' => Date.new(2018, 8, 4),
-      'day3' => Date.new(2018, 8, 5)
+      Date.new(2018, 8, 25) => 'https://leadi.jp/json/15216.json',
+      Date.new(2018, 8, 26) => 'https://leadi.jp/json/15217.json'
     }
-    colors = {
-      'HOTSTAGE'      => '#FA3D56',
-      'SMILEGARDEN'   => '#B1DD00',
-      'DREAMSTAGE'    => '#00C858',
-      'DOLLFACTORY'   => '#FF88B4',
-      'SKYSTAGE'      => '#39CDFE',
-      'FESTIVALSTAGE' => '#FFDF33',
-      'FUJIYOKOSTAGE' => '#06708F',
-      'INFOCENTRE'    => '#FB3CA6',
-      'GREETINGAREA'  => '#808080'
+    stages = {
+      'ストロベリーステージ' => 'strawberry',
+      'ブルーベリーステージ' => 'blueberry',
+      'キウイステージ'       => 'kiwi',
+      'ピーチステージ'       => 'peach',
+      'オレンジステージ'     => 'orange',
+      'トークステージ'       => 'talk'
     }
     results = []
-    open('http://www.idolfes.com/2018/json/timetable/time.json') do |f|
-      JSON.parse(f.read).each do |day, stages|
-        date = dates[day]
-        stages.each do |stage, items|
-          stage_code = stage.delete(' ')
-          color = colors[stage_code]
-          items.each do |item|
-            next if item['artist'].include?('未使用') # FUCK
-            id = [day, stage_code, item['start']].join('-')
-            start_time = Time.zone.strptime("#{date} #{item['start']}", '%Y-%m-%d %H%M')
-            end_time =   Time.zone.strptime("#{date} #{item['end']}",   '%Y-%m-%d %H%M')
-            detail = item['detail'].split(/<br>/).delete_if(&:empty?) if item['detail'] != 'null'
+    dates.each do |date, url|
+      open(url) do |f|
+        JSON.parse(f.read)['data']['timetables'].each do |e|
+          stage = e['stage']
+          color = e['color']
+          e['turns'].each do |turn|
+            artist = turn['lineup'].map { |l| l['name'] }.join('、')
+            if artist.blank?
+              detail = turn['replacement'].split("\r\n")
+              artist = detail.shift
+            end
+            start_time = Time.zone.strptime("#{date} #{turn['start'].rjust(4, '0')}", '%Y-%m-%d %H%M')
+            end_time   = Time.zone.strptime("#{date} #{turn['end'].rjust(4, '0')}",   '%Y-%m-%d %H%M')
             results << {
-              id: id,
-              artist: item['artist'],
+              id: turn['id'],
+              artist: artist,
               detail: detail,
               start: start_time,
               end: end_time,
               stage: stage,
-              stage_code: stage_code,
+              stage_code: stages[stage],
               color: color
             }
           end
-        end
-      end
-    end
-    open('http://www.idolfes.com/2018/greeting/greeting.tsv', 'r:UTF-8') do |f|
-      color = colors['GREETINGAREA']
-      f.read.each_line do |line|
-        day, time, *items = line.chomp.split(/\t/)
-        times = time.split(/～/)
-        date = dates[day]
-        start_time = Time.zone.strptime("#{date} #{times[0]}", '%Y-%m-%d %H：%M')
-        end_time   = Time.zone.strptime("#{date} #{times[1]}", '%Y-%m-%d %H：%M')
-        items.each.with_index do |item, i|
-          next if item.blank?
-          stage_code = ('A'.ord + i).chr
-          stage = "GREETING AREA (#{stage_code})"
-          id = "#{day}-GREETINGAREA-#{start_time.strftime('%H%M')}-#{stage_code}"
-          results << {
-            id: id,
-            artist: item,
-            detail: nil,
-            start: start_time,
-            end: end_time,
-            stage: stage,
-            stage_code: 'GREETINGAREA',
-            color: color
-          }
         end
       end
     end
@@ -78,4 +48,3 @@ namespace :timetable do
     Rails.cache.write('main', results)
   end
 end
-# rubocop:enable Metrics/BlockLength

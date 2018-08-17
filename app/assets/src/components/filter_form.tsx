@@ -22,20 +22,16 @@ class Form extends React.Component<IFormProps & IDispatchProps> {
     constructor(props: any) {
         super(props);
         this.days = [
-            { key: '08-03', label: '8/3(金)' },
-            { key: '08-04', label: '8/4(土)' },
-            { key: '08-05', label: '8/5(日)' },
+            { key: '08-25', label: '8/25(土)' },
+            { key: '08-26', label: '8/26(日)' },
         ];
         this.stages = [
-            { key: 'HOTSTAGE',      label: 'HOT STAGE'       },
-            { key: 'SMILEGARDEN',   label: 'SMILE GARDEN'    },
-            { key: 'DREAMSTAGE',    label: 'DREAM STAGE'     },
-            { key: 'DOLLFACTORY',   label: 'DOLL FACTORY'    },
-            { key: 'SKYSTAGE',      label: 'SKY STAGE'       },
-            { key: 'FESTIVALSTAGE', label: 'FESTIVAL STAGE'  },
-            { key: 'FUJIYOKOSTAGE', label: 'FUJI YOKO STAGE' },
-            { key: 'INFOCENTRE',    label: 'INFO CENTRE'     },
-            { key: 'GREETINGAREA',  label: 'GREETING AREA'   },
+            { key: 'strawberry', label: 'ストロベリーステージ' },
+            { key: 'blueberry',  label: 'ブルーベリーステージ' },
+            { key: 'kiwi',       label: 'キウイステージ' },
+            { key: 'peach',      label: 'ピーチステージ' },
+            { key: 'orange',     label: 'オレンジステージ' },
+            { key: 'talk',       label: 'トークステージ' },
         ];
     }
     public render() {
