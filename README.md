@@ -1,6 +1,6 @@
-# tif2018-mytt
+# expo2018-mytt
 
-https://tif2018-mytt.herokuapp.com/
+https://expo2018-mytt.herokuapp.com/
 
 ```
 $ heroku buildpacks:add heroku/nodejs

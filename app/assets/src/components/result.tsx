@@ -58,7 +58,7 @@ class Result extends React.Component<IProps, IState> {
             return response.json();
         }).then((json) => {
             history.push('/tt/' + json.key);
-            const url = 'https://twitter.com/intent/tweet?hashtags=TIF2018_MyTT'
+            const url = 'https://twitter.com/intent/tweet?hashtags=EXPO2018_MyTT'
                 + '&text=' + encodeURIComponent(`俺のタイテ ${json.url}`)
                 + '&url=' + encodeURIComponent(window.location.href);
             this.setState({ url });
