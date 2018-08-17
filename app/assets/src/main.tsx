@@ -38,7 +38,7 @@ class Main extends React.Component<IMainProps, {}> {
                         <div className="container-fluid">
                             <div className="navbar-header">
                                 <Link to="/">
-                                    <span className="navbar-brand text-light">TIF 2018 MyTT</span>
+                                    <span className="navbar-brand text-light">EXPO 2018 MyTT</span>
                                 </Link>
                             </div>
                         </div>
